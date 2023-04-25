@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/main1.css">
+    <title>Simulador Credito NAUW</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+          background-color: #56AC47;
+          color: #56AC47;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="contenedor-grande">
+                <div class="caja-titulo">
+                    <span class="titulo">Calcula tu Préstamo</span>
+                </div>
+                <section>
+                    <div class="containerc">
+                        <label for="dinero" class="lbl">Elige el Monto</label>
+                        <span id="textoDinero" class="val" style>$ 300.000</span>
+                    </div>
+                    <input type="range" class="form-range" value="300000" id="dinero" min="300000" max="5000000" step="100000">
+                    <div class="containerc">
+                        <label for="dias" class="lbl">Elige las Cuotas</label>
+                        <span id="texto-cuotas" class="val" style>3</span>
+                    </div>
+                    <input type="range" class="form-range" id="cuotas" min="3" max="18" step="1">
+                    <hr>
+                </section>
+                <section>
+                    <div class="contenedor-informacion">
+                        <div class="containerc">
+                            <span class="lbl iva">Intereses</span>
+                            <span class="var iva">34.49 % EA</span>
+                        </div>
+                        <div class="containerc">
+                            <span class="lbl">Valor del Crédito</span>
+                            <span id="texto-deduc" class="var" style="">$ 384.123</span>
+                        </div>
+                        <div class="containerc">
+                            <span class="lbl">Valor a Desembolsar *</span>
+                            <span id="texto-desem" class="var" style="">$ 300.000</span>
+                        </div>
+                        <hr>
+                        <div class="containerc">
+                            <span class="total">Valor Cuota Aproximada</span>
+                            <span id="texto-total" class="var total" style>$149.915</span>
+                        </div>
+                    </div>
+                    <span>*Valores aproximados, sujetos a ajustes por condiciones de otorgamiento montos, plazos y calificación de riesgo.</span>
+
+                </section>
+                
+            </div>
+            
+          </div>
+        </div>
+      </div>
+</body>
+ <script>
+    const sliders = document.querySelectorAll("input[type='range']");
+    const textoDinero = document.getElementById("textoDinero")
+    const textoDeduc = document.getElementById("texto-deduc")
+    const textoTotal = document.getElementById("texto-total")
+    const textoCuotas = document.getElementById("texto-cuotas")
+    const textoDesem = document.getElementById("texto-desem")
+    
+    
+    const estudioCredito = 50000
+    const ivaVariable = 0.19
+    const usoPlat = 35000
+    const avalVariable = 0.10
+    const interes = 0.025
+    const vtecnologia = 15420
+    const pcredito = 0.219 
+        
+    let totalAdminis
+    let totalDesem
+    let dinero
+    let cuotas
+    let estudio
+    let aval
+    let deduc
+    let total = 0 
+    let array = []
+    
+    
+    sliders.forEach(function(slider){
+        slider.addEventListener("input",refresh);
+    });
+    
+    function refresh(){
+        
+        
+        dinero = parseInt(document.getElementById("dinero").value)
+        var vcredito=(dinero/(1-pcredito)).toFixed(0)
+        cuotas = parseInt(document.getElementById("cuotas").value)
+        estudio = estudioCredito +  (estudioCredito*ivaVariable)
+        aval = (dinero * avalVariable) + ((dinero * avalVariable) * ivaVariable)
+        totalAdminis = vcredito
+        totalDesem = dinero  
+        var elevado= Math.pow((1 + interes),cuotas)
+        
+        total = Math.trunc((vcredito*(interes*elevado))/((elevado)-1))+vtecnologia
+    
+        
+    
+        textoDinero.textContent = "$ " + dinero.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+        textoCuotas.textContent = cuotas
+        textoDeduc.textContent = "$ " +totalAdminis.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.") 
+        textoDesem. textContent = "$ " + totalDesem.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+        textoTotal.textContent = "$ " + total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+    
+    
+    
+    
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</html>
